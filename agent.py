@@ -60,7 +60,7 @@ class Agent:
 
         env = gym.make("FlappyBird-v0", render_mode="human" if render else None)
 
-        num_states = env.oberservation_space.shape[0] #input dim
+        num_states = env.observation_space.shape[0] #input dim
         num_actions = env.action_space.n # output dim
 
 
@@ -119,7 +119,7 @@ class Agent:
                 next_state = torch.tensor(next_state, dtype=torch.float, device=device)
 
                 if is_training:
-                        memory.append(state, action, next_state, reward, terminated) #new exp appended in memory
+                        memory.append((state, action, next_state, reward, terminated)) #new exp appended in memory
                         steps += 1
 
                 state = next_state
@@ -143,7 +143,7 @@ class Agent:
                     torch.save(policy_dqn.state_dict(), self.MODEL_FILE)
                     best_reward = episode_rewards
 
-                    
+
 
             if is_training and len(memory) > self.mini_batch_size:
                 # get sample
